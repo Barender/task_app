@@ -1,0 +1,29 @@
+body {
+  height: 100vh;
+  background-color: rgb(238, 238, 238);
+}
+
+.flexible-width {
+  width: 400px;
+  vertical-align: middle;
+}
+
+.big-font-task {
+  font-size: 6rem;
+}
+
+.vertically-fix-card {
+  min-height: 200px;
+  height: 200px;
+}
+
+.big-pie {
+  width: 165px;
+}
+
+@media (max-width: 576px) {
+  .flexible-width {
+    width: 98%;
+    vertical-align: middle;
+  }
+}
