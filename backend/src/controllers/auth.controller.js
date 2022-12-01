@@ -11,18 +11,30 @@ const asyncHandler = require('../globals/middlewares/asyncHandler.js');
 const userSignin = asyncHandler(async (req, res, next) => {
   const { apiKey, name } = req.body;
 
-  // Check user exists
-  const user = await User.findOne({ name });
-  if (!user) return next(new CustomError(httpStatus.NOT_FOUND, 'No user found'));
-
-  // verify api key
-  if (!apiKey) return next(new CustomError(httpStatus.BAD_REQUEST, 'No api key provided'));
   if (apiKey === config.API_KEY) {
-    // Generate token
-    const tokens = await tokenService.generateAuthToken(user);
+    // create if no user exists
+    const users = await User.find({});
+    if (users.length > 0) {
+      // Check user exists
+      const user = await User.findOne({ name });
+      if (!user) return next(new CustomError(httpStatus.NOT_FOUND, 'No user found'));
 
-    // Final result
-    res.status(httpStatus.OK).json({ success: true, result: { user, ...tokens } });
+      // verify api key
+      if (!apiKey) return next(new CustomError(httpStatus.BAD_REQUEST, 'No api key provided'));
+
+      // Generate token
+      const tokens = await tokenService.generateAuthToken(user);
+      // Final result
+      res.status(httpStatus.OK).json({ success: true, result: { user, ...tokens } });
+    } else {
+      // create a user id database is empty
+      const user = await User.create({ name });
+
+      // Generate token
+      const tokens = await tokenService.generateAuthToken(user);
+      // Final result
+      res.status(httpStatus.OK).json({ success: true, result: { user, ...tokens } });
+    }
   } else {
     return next(new CustomError(httpStatus.BAD_REQUEST, 'Api key provided is incorrect'));
   }
