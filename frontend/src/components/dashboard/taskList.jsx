@@ -16,9 +16,11 @@ const TaskList = () => {
       <div className="card">
         <div className="card-body">
           <div className="row">
-            {filteredTasks?.map((task) => (
-              <TaskBox {...{ task }} key={task?.id} />
-            ))}
+            {filteredTasks?.length > 0
+              ? filteredTasks?.map((task) => (
+                  <TaskBox {...{ task }} key={task?.id} />
+                ))
+              : "No tasks found"}
           </div>
         </div>
       </div>

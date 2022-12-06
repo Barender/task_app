@@ -11,16 +11,18 @@ const LatestTaks = () => {
           <h5 className="text-secondary">Latest Task Created</h5>
           <div>
             <ul>
-              {dashboardData?.latestTask?.map((data) => (
-                <li
-                  key={data.id}
-                  className={
-                    data?.isComplete ? "text-decoration-line-through" : ""
-                  }
-                >
-                  {data?.task}
-                </li>
-              ))}
+              {dashboardData?.latestTask?.length > 0
+                ? dashboardData?.latestTask?.map((data) => (
+                    <li
+                      key={data.id}
+                      className={
+                        data?.isComplete ? "text-decoration-line-through" : ""
+                      }
+                    >
+                      {data?.task}
+                    </li>
+                  ))
+                : "No tasks found."}
             </ul>
           </div>
         </div>

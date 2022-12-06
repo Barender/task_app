@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
 const config = require('../config/config.js');
-const User = require('../models/User.model.js');
-const CustomError = require('../globals/utility/CustomError.js');
+const User = require('../models/user.model.js');
+const CustomError = require('../globals/utility/customError.js');
 const tokenService = require('../services/token.service.js');
 const asyncHandler = require('../globals/middlewares/asyncHandler.js');
 

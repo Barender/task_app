@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const Task = require('../models/task.model.js');
-const CustomError = require('../globals/utility/CustomError.js');
+const CustomError = require('../globals/utility/customError.js');
 const asyncHandler = require('../globals/middlewares/asyncHandler.js');
 const AdvanceApi = require('../globals/utility/advanceApi.js');
 

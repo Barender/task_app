@@ -11,22 +11,26 @@ const TaskPieBoard = () => {
       <div className="card text-secondary">
         <div className="card-body vertically-fix-card">
           <div className="text-center">
-            <PieChart
-              className="big-pie"
-              label={({ dataEntry }) => dataEntry.value}
-              data={[
-                {
-                  title: "Completed Task",
-                  value: dashboardData?.competedTasks || 0,
-                  color: "#FDF",
-                },
-                {
-                  title: "Total Task",
-                  value: dashboardData?.totalTasks || 0,
-                  color: "#C137",
-                },
-              ]}
-            />
+            {dashboardData?.competedTasks ? (
+              <PieChart
+                className="big-pie"
+                label={({ dataEntry }) => dataEntry.value}
+                data={[
+                  {
+                    title: "Completed Task",
+                    value: dashboardData?.competedTasks || 0,
+                    color: "#FDF",
+                  },
+                  {
+                    title: "Total Task",
+                    value: dashboardData?.totalTasks || 0,
+                    color: "#C137",
+                  },
+                ]}
+              />
+            ) : (
+              "No tasks found"
+            )}
           </div>
         </div>
       </div>
