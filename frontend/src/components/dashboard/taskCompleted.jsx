@@ -11,9 +11,9 @@ const TaskCompleted = () => {
         <div className="card-body vertically-fix-card">
           <h5>Task Completed</h5>
           <span className="big-font-task text-primary">
-            {dashboardData?.competedTasks}
+            {dashboardData?.competedTasks || 0}
           </span>{" "}
-          / {dashboardData?.totalTasks}
+          / {dashboardData?.totalTasks || 0}
         </div>
       </div>
     </div>
