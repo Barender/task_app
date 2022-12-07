@@ -10,7 +10,7 @@ const TaskCompleted = () => {
       <div className="card text-secondary">
         <div className="card-body vertically-fix-card">
           <h5>Task Completed</h5>
-          <span className="big-font-task text-primary">
+          <span className="big-font-task text-primary" title="task-completed">
             {dashboardData?.competedTasks || 0}
           </span>{" "}
           / {dashboardData?.totalTasks || 0}

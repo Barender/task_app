@@ -62,13 +62,20 @@ const Login = () => {
       <div className="card flexible-width">
         <div className="card-body">
           <form onSubmit={handleSubmit}>
-            <label className="mb-3 fs-2 text-secondary">Login</label>
+            <label
+              htmlFor="login"
+              className="mb-3 fs-2 text-secondary"
+              id="login"
+              aria-label="login"
+            >
+              Login
+            </label>
             <div className="mb-3">
               <input
                 type="text"
                 className="form-control"
                 id="id"
-                placeholder="id"
+                placeholder="api key"
                 name="apiKey"
                 value={apiKey}
                 onChange={handleChange}
@@ -86,11 +93,17 @@ const Login = () => {
               />
             </div>
             <div className="d-grid mb-3">
-              <button type="submit" className="btn btn-primary">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                role="submit-login"
+              >
                 Login
               </button>
             </div>
-            <p className="text-danger text-center my-2">{error}</p>
+            <p className="text-danger text-center my-2" title="error">
+              {error}
+            </p>
           </form>
         </div>
       </div>

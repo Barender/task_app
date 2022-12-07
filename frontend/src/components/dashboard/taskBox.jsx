@@ -24,6 +24,7 @@ const TaskBox = ({ task }) => {
             type="checkbox"
             defaultChecked={isComplete}
             id={id}
+            role="checkbox"
             onChange={(e) => handleTaskUpdate(e.target.checked, task)}
           />
           <label

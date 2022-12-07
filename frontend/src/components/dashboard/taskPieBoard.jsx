@@ -10,7 +10,7 @@ const TaskPieBoard = () => {
     <div className="col-md-4 my-1">
       <div className="card text-secondary">
         <div className="card-body vertically-fix-card">
-          <div className="text-center">
+          <div className="text-center" title="pie-board">
             {dashboardData?.competedTasks ? (
               <PieChart
                 className="big-pie"

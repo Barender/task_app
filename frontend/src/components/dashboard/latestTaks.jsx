@@ -10,7 +10,7 @@ const LatestTaks = () => {
         <div className="card-body vertically-fix-card">
           <h5 className="text-secondary">Latest Task Created</h5>
           <div>
-            <ul>
+            <ul title="latest-task">
               {dashboardData?.latestTask?.length > 0
                 ? dashboardData?.latestTask?.map((data) => (
                     <li

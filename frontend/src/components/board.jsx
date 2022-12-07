@@ -2,10 +2,10 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllTasks } from "../redux/selectors/task.selector";
 import taskActions from "../redux/actions/task.action";
-import loadable from "./loadable";
-import ModalBox from "./modal";
 import TaskContext from "../contexts/task.context";
 import TaskSeach from "./dashboard/taskSeach";
+import loadable from "./loadable";
+import ModalBox from "./modal";
 
 // lazy import components
 const TaskPieBoard = loadable(() => import("./dashboard/taskPieBoard"), {
@@ -20,7 +20,6 @@ const LatestTaks = loadable(() => import("./dashboard/latestTaks"), {
 const TaskList = loadable(() => import("./dashboard/taskList"), {
   fallback: <>Loading...</>,
 });
-
 const TaskForm = loadable(() => import("./dashboard/taskForm"), {
   fallback: <>Loading...</>,
 });
