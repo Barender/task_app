@@ -1,39 +1,49 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import notification from "./notification.utils";
 
-// todo: refresh token api integration
+export const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_BASEURL,
+  headers: { "Content-Type": "application/json" },
+});
+
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    const token = Cookies.get("refresh");
+    if (token) {
+      const headers = {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      };
+      return { ...config, headers, withCredentials: true };
+    }
+    return config;
+  },
+  (error) => {
+    Promise.reject(error);
+  },
+);
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (!error.response.data.success) {
+      notification(error.response.data.message, "danger");
+    }
+    return Promise.reject(error.response.data.message);
+  },
+);
+
 // function to invoke api
 const caller = async (api, formData = null, method = "GET") => {
   const url = `${import.meta.env.VITE_BASEURL}${api}`;
-  const token = Cookies.get("refresh");
-
-  const headers = {
-    accept: "application/json",
-    "Content-Type": "application/json",
-  };
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  const axiosInstance = axios.create({
-    headers,
+  const response = await axiosInstance({
+    url,
+    method,
+    data: formData,
   });
-
-  try {
-    let { data, status, statusText } = await axiosInstance({
-      url,
-      method,
-      data: formData,
-    });
-    const result = {
-      data,
-      status,
-      statusText,
-    };
-    return result;
-  } catch (error) {
-    return error.response;
-  }
+  return response.data;
 };
 
 export default caller;

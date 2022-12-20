@@ -9,7 +9,7 @@ const notification = (message, type = "success", delay = 2000) => {
     hideProgressBar: true,
     newestOnTop: true,
     closeOnClick: true,
-    closeButton: false,
+    closeButton: true,
     position: toast.POSITION.TOP_RIGHT,
     transition: Slide,
   });

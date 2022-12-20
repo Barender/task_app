@@ -4,6 +4,7 @@ import authActions from "../actions/auth.action";
 export const initialState = {
   user: null,
   isAuthenticated: false,
+  loaderStatus: false,
 };
 
 const authReducer = (state = initialState, action) =>
@@ -25,6 +26,9 @@ const authReducer = (state = initialState, action) =>
         break;
       case authActions.SET_AUTH_STATUS:
         data.isAuthenticated = payload;
+        break;
+      case authActions.SET_LOADER_STATUS:
+        data.loaderStatus = payload;
         break;
       default:
         return { ...state };

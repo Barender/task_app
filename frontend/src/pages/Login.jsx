@@ -1,12 +1,18 @@
 import React from "react";
+import NewInput from "../components/ui_wrapper/input";
 import authActions from "../redux/actions/auth.action";
-import { useNavigate } from "react-router-dom";
+import NewButton from "../components/ui_wrapper/button";
 import { useDispatch, useSelector } from "react-redux";
-import { selectIsAuthenticated } from "../redux/selectors/auth.selector";
+import { useNavigate } from "react-router-dom";
+import {
+  selectIsAuthenticated,
+  selectLoaderStatus,
+} from "../redux/selectors/auth.selector";
 
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const loader = useSelector(selectLoaderStatus());
   const isAuthenticated = useSelector(selectIsAuthenticated());
 
   // form state
@@ -37,12 +43,14 @@ const Login = () => {
   // submit handler
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (apiKey == "" || name == "") {
+    dispatch(authActions.setLoaderStatus(true));
+    if (apiKey === "" || name === "") {
+      dispatch(authActions.setLoaderStatus(false));
       return setState(() => ({
         ...state,
         error: "Please fill all fields",
       }));
-    } else if (name && apiKey && error == "") {
+    } else if (name && apiKey && error === "") {
       dispatch(
         authActions.requestLogin({
           apiKey,
@@ -71,35 +79,36 @@ const Login = () => {
               Login
             </label>
             <div className="mb-3">
-              <input
+              <NewInput
                 type="text"
                 className="form-control"
                 id="id"
-                placeholder="api key"
+                placeholder="Id"
                 name="apiKey"
                 value={apiKey}
                 onChange={handleChange}
               />
             </div>
             <div className="mb-3">
-              <input
+              <NewInput
                 type="text"
                 className="form-control"
                 id="name"
-                placeholder="name"
+                placeholder="Name"
                 name="name"
                 value={name}
                 onChange={handleChange}
               />
             </div>
             <div className="d-grid mb-3">
-              <button
+              <NewButton
                 type="submit"
                 className="btn btn-primary"
                 role="submit-login"
+                disabled={loader}
               >
-                Login
-              </button>
+                {loader ? "Submitting..." : "Login"}
+              </NewButton>
             </div>
             <p className="text-danger text-center my-2" title="error">
               {error}

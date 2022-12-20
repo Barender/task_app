@@ -1,54 +1,43 @@
 import api from "../../utils/api.utils";
 import caller from "../../utils/caller.utils";
 import authActions from "../actions/auth.action";
-import notification from "../../utils/notification.utils";
 import { takeLatest, put } from "redux-saga/effects";
-import { formatThrowError } from "../../utils/helper.utils";
 import { removeCookie, setCookie } from "../../utils/auth.utils";
 
 // ***** LOGIN USER ***** //
 export function* requestLoginSaga({ payload }) {
   try {
-    const { data, status } = yield caller(api.SIGNIN, payload, "POST");
-    if (status >= 200 && status <= 204) {
-      yield put(authActions.loginSuccess(data.result?.user));
-      setCookie("access", data?.result?.access?.token);
-      setCookie("refresh", data?.result?.refresh?.token);
-    } else {
-      formatThrowError(data?.message);
-    }
+    const { result } = yield caller(api.SIGNIN, payload, "POST");
+    yield put(authActions.loginSuccess(result?.user));
+    setCookie("access", result?.access?.token);
+    setCookie("refresh", result?.refresh?.token);
+    yield put(authActions.setLoaderStatus(false));
   } catch (error) {
-    notification(error.message, "danger");
+    yield put(authActions.setLoaderStatus(false));
   }
 }
 
 // ***** LOGOUT USER ***** //
 export function* requestLogoutSaga({ payload }) {
   try {
-    const { data, status } = yield caller(api.SIGNOUT, payload, "POST");
-    if (status >= 200 && status <= 204) {
-      yield put(authActions.logoutSuccess());
-      removeCookie("access", { path: "/" });
-      removeCookie("refresh", { path: "/" });
-    } else {
-      formatThrowError(data?.message);
-    }
+    yield caller(api.SIGNOUT, payload, "POST");
+    removeCookie("access", { path: "/" });
+    removeCookie("refresh", { path: "/" });
+    yield put(authActions.logoutSuccess());
+    yield put(authActions.setLoaderStatus(false));
   } catch (error) {
-    notification(error.message, "danger");
+    yield put(authActions.setLoaderStatus(false));
   }
 }
 
 // ***** GET USER DETAILS ***** //
 export function* getUserDataSaga() {
   try {
-    const { data, status } = yield caller(api.GET_USER);
-    if (status >= 200 && status <= 204) {
-      yield put(authActions.userDataSuccess(data?.result));
-    } else {
-      formatThrowError(data?.message);
-    }
+    const { result } = yield caller(api.GET_USER);
+    yield put(authActions.userDataSuccess(result));
+    yield put(authActions.setLoaderStatus(false));
   } catch (error) {
-    notification(error.message, "danger");
+    yield put(authActions.setLoaderStatus(false));
   }
 }
 

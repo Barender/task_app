@@ -4,14 +4,15 @@ import Modal from "react-bootstrap/Modal";
 import TaskContext from "../../contexts/task.context";
 
 const ModalBox = ({ children, modalTitle }) => {
-  const { modalStatus, setModalStatus, setTaskSelected } =
+  const { modalStatus, setModalStatus, setTaskSelected, setDeleteId } =
     React.useContext(TaskContext);
 
   // handle modal close event
-  const handleModalClose = () => {
+  const handleModalClose = React.useCallback(() => {
     setTaskSelected(false);
     setModalStatus(false);
-  };
+    setDeleteId(null);
+  }, [modalStatus]);
   return (
     <>
       <Modal
@@ -31,9 +32,11 @@ const ModalBox = ({ children, modalTitle }) => {
 
 ModalBox.propTypes = {
   modalTitle: PropTypes.string.isRequired,
+  children: PropTypes.any,
 };
 ModalBox.defaultProps = {
   modalTitle: "Add/Update a task",
+  children: <></>,
 };
 
 export default React.memo(ModalBox);

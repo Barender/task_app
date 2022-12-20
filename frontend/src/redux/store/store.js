@@ -10,11 +10,7 @@ const sagaMiddleware = createSagaMiddleware();
 const initialState = {};
 
 // store config
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
-);
+const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(sagaMiddleware)));
 
 // allow saga run services
 sagaMiddleware.run(rootSaga);
