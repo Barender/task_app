@@ -6,6 +6,7 @@ const authActions = {
   REQUEST_USER_DATA: "REQUEST_USER_DATA",
   USER_DATA_SUCCESS: "USER_DATA_SUCCESS",
   SET_AUTH_STATUS: "SET_AUTH_STATUS",
+  SET_LOADER_STATUS: "SET_LOADER_STATUS",
   requestLogin: (data) => ({
     payload: data,
     type: authActions.REQUEST_LOGIN,
@@ -31,6 +32,10 @@ const authActions = {
   setAuthStatus: (data) => ({
     payload: data,
     type: authActions.SET_AUTH_STATUS,
+  }),
+  setLoaderStatus: (status) => ({
+    payload: status,
+    type: authActions.SET_LOADER_STATUS,
   }),
 };
 

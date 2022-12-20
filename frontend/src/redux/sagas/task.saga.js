@@ -1,35 +1,29 @@
 import { takeLatest, put, call } from "redux-saga/effects";
-import { formatThrowError } from "../../utils/helper.utils";
 import api from "../../utils/api.utils";
 import caller from "../../utils/caller.utils";
 import taskActions from "../actions/task.action";
+import authActions from "../actions/auth.action";
 import notification from "../../utils/notification.utils";
 
 // ***** GET ALL TASK ***** //
 export function* getAllTaskSaga() {
   try {
-    const { data, status } = yield caller(api.TASK);
-    if (status >= 200 && status <= 204) {
-      yield put(taskActions.allTaskSuccess(data?.result));
-    } else {
-      formatThrowError(data?.message);
-    }
+    const { result } = yield caller(api.TASK);
+    yield put(taskActions.allTaskSuccess(result));
+    yield put(authActions.setLoaderStatus(false));
   } catch (error) {
-    notification(error.message, "danger");
+    yield put(authActions.setLoaderStatus(false));
   }
 }
 
 // ***** GET DASHBOARD DATA ***** //
 export function* getDashboardDataSaga() {
   try {
-    const { data, status } = yield caller(api.DASHBOARD);
-    if (status >= 200 && status <= 204) {
-      yield put(taskActions.dashboardDataSuccess(data?.result));
-    } else {
-      formatThrowError(data?.message);
-    }
+    const { result } = yield caller(api.DASHBOARD);
+    yield put(taskActions.dashboardDataSuccess(result));
+    yield put(authActions.setLoaderStatus(false));
   } catch (error) {
-    notification(error.message, "danger");
+    yield put(authActions.setLoaderStatus(false));
   }
 }
 
@@ -37,16 +31,13 @@ export function* getDashboardDataSaga() {
 export function* requestNewTaskSaga({ payload }) {
   if (payload) {
     try {
-      const { data, status } = yield caller(api.TASK, payload, "POST");
-      if (status >= 200 && status <= 204) {
-        yield put(taskActions.allTaskSuccess(data?.result));
-        yield call(getDashboardDataSaga);
-        notification("Task has been created");
-      } else {
-        formatThrowError(data?.message);
-      }
+      const { result } = yield caller(api.TASK, payload, "POST");
+      yield put(taskActions.allTaskSuccess(result));
+      yield call(getDashboardDataSaga);
+      notification("Task has been created");
+      yield put(authActions.setLoaderStatus(false));
     } catch (error) {
-      notification(error.message, "danger");
+      yield put(authActions.setLoaderStatus(false));
     }
   }
 }
@@ -56,20 +47,13 @@ export function* requestUpdateTaskSaga({ payload }) {
   const { id, data: formData } = { ...payload };
   if (id) {
     try {
-      const { data, status } = yield caller(
-        `${api.TASK}/${id}`,
-        formData,
-        "PUT"
-      );
-      if (status >= 200 && status <= 204) {
-        yield put(taskActions.allTaskSuccess(data?.result));
-        yield call(getDashboardDataSaga);
-        notification("Task has been updated");
-      } else {
-        formatThrowError(data?.message);
-      }
+      const { result } = yield caller(`${api.TASK}/${id}`, formData, "PUT");
+      yield put(taskActions.allTaskSuccess(result));
+      yield call(getDashboardDataSaga);
+      notification("Task has been updated");
+      yield put(authActions.setLoaderStatus(false));
     } catch (error) {
-      notification(error.message, "danger");
+      yield put(authActions.setLoaderStatus(false));
     }
   }
 }
@@ -78,20 +62,13 @@ export function* requestUpdateTaskSaga({ payload }) {
 export function* requestDeleteTaskSaga({ payload }) {
   if (payload) {
     try {
-      const { data, status } = yield caller(
-        `${api.TASK}/${payload}`,
-        {},
-        "DELETE"
-      );
-      if (status >= 200 && status <= 204) {
-        yield put(taskActions.allTaskSuccess(data?.result));
-        yield call(getDashboardDataSaga);
-        notification("Task has been deleted");
-      } else {
-        formatThrowError(data?.message);
-      }
+      const { result } = yield caller(`${api.TASK}/${payload}`, {}, "DELETE");
+      yield put(taskActions.allTaskSuccess(result));
+      yield call(getDashboardDataSaga);
+      notification("Task has been deleted");
+      yield put(authActions.setLoaderStatus(false));
     } catch (error) {
-      notification(error.message, "danger");
+      yield put(authActions.setLoaderStatus(false));
     }
   }
 }

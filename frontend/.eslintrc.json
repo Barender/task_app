@@ -1,0 +1,39 @@
+{
+  "rules": {
+    "react/jsx-filename-extension": 0,
+    "no-plusplus": 0,
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "react/jsx-indent": ["error", 2],
+    "react/jsx-indent-props": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "double"],
+    "semi": ["error", "always"],
+    "no-empty": "warn",
+    "no-cond-assign": ["error", "always"],
+    "for-direction": "off",
+    "eqeqeq": "warn",
+    "max-len": [2, 300],
+    "no-underscore-dangle": 0,
+    "no-script-url": 0,
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+    "no-unused-vars": [2, { "vars": "all", "args": "after-used" }]
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:prettier/recommended", "prettier"],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true
+  },
+  "overrides": [
+    {
+      "files": ["*.test.jsx"],
+      "rules": {
+        "jest/expect-expect": "off"
+      }
+    }
+  ]
+}

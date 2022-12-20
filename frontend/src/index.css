@@ -8,6 +8,10 @@ body {
   vertical-align: middle;
 }
 
+.btn {
+  border: none !important;
+}
+
 .big-font-task {
   font-size: 6rem;
 }
@@ -19,6 +23,66 @@ body {
 
 .big-pie {
   width: 165px;
+}
+
+.task_search svg {
+  position: absolute;
+  top: 12px;
+  left: 22px;
+}
+
+.task_search input {
+  padding-left: 35px;
+  background-color: #d9dfeb;
+}
+
+.btn-primary {
+  background-color: #5285ec !important;
+}
+
+.edit_btns button svg {
+  fill: #647278;
+}
+
+.task_lists .row {
+  height: auto;
+}
+
+.latest_task {
+  overflow: auto;
+}
+
+.lout_btn {
+  text-decoration: none !important;
+  color: #647278 !important;
+  font-weight: 500 !important;
+  padding: 0 !important;
+}
+
+.Toastify__close-button {
+  margin-top: 10px;
+}
+
+.pie_board {
+  height: 180px !important;
+  width: 180px !important;
+}
+
+.t_list .row {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid lightgray;
+}
+
+@media (max-width: 768px) {
+  .center_panel,
+  .task_search input {
+    text-align: center;
+  }
+  .task_search input {
+    padding-left: inherit;
+    margin-bottom: 10px;
+  }
 }
 
 @media (max-width: 576px) {

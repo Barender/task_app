@@ -1,28 +1,21 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { selectAllTasks } from "../redux/selectors/task.selector";
+import { useDispatch, useSelector } from "react-redux";
 import taskActions from "../redux/actions/task.action";
+import authActions from "../redux/actions/auth.action";
 import TaskContext from "../contexts/task.context";
 import TaskSeach from "./dashboard/taskSeach";
 import loadable from "./loadable";
 import ModalBox from "./modal";
+import NewButton from "./ui_wrapper/button";
 
 // lazy import components
-const TaskPieBoard = loadable(() => import("./dashboard/taskPieBoard"), {
-  fallback: <>Loading...</>,
-});
-const TaskCompleted = loadable(() => import("./dashboard/taskCompleted"), {
-  fallback: <>Loading...</>,
-});
-const LatestTaks = loadable(() => import("./dashboard/latestTaks"), {
-  fallback: <>Loading...</>,
-});
-const TaskList = loadable(() => import("./dashboard/taskList"), {
-  fallback: <>Loading...</>,
-});
-const TaskForm = loadable(() => import("./dashboard/taskForm"), {
-  fallback: <>Loading...</>,
-});
+const TaskPieBoard = loadable(() => import("./dashboard/taskPieBoard"));
+const TaskCompleted = loadable(() => import("./dashboard/taskCompleted"));
+const LatestTaks = loadable(() => import("./dashboard/latestTaks"));
+const TaskList = loadable(() => import("./dashboard/taskList"));
+const TaskForm = loadable(() => import("./dashboard/taskForm"));
+const NoTaskPopper = loadable(() => import("./dashboard/noTaskPopper"));
 
 const Board = () => {
   const dispatch = useDispatch();
@@ -31,17 +24,17 @@ const Board = () => {
 
   // initialize task to state
   React.useEffect(() => {
+    dispatch(authActions.setLoaderStatus(false));
     setTasks(allTasks);
   }, [allTasks]);
 
   // handle search and filtering
   const [value, setValue] = React.useState(undefined);
   const newValue = React.useDeferredValue(value);
+
   const filteredTasks = React.useMemo(() => {
     if (newValue) {
-      return tasks?.filter((item) =>
-        item?.task?.toLowerCase()?.includes(newValue)
-      );
+      return tasks?.filter((item) => item?.task?.toLowerCase()?.includes(newValue));
     } else {
       return tasks;
     }
@@ -53,12 +46,15 @@ const Board = () => {
 
   // handle task update
   const handleTaskUpdate = (state, data) => {
+    dispatch(authActions.setLoaderStatus(true));
     dispatch(taskActions.requestUpdateTask(data?.id, { isComplete: state }));
   };
 
-  // handle task update
+  // handle task delete
+  const [deleteId, setDeleteId] = React.useState(null);
   const handleDeleteTask = (id) => {
-    dispatch(taskActions.requestDeleteTask(id));
+    setDeleteId(id);
+    setModalStatus(true);
   };
   return (
     <TaskContext.Provider
@@ -74,28 +70,67 @@ const Board = () => {
         handleDeleteTask,
         taskSelected,
         setTaskSelected,
+        setDeleteId,
       }}
     >
-      <ModalBox>
-        <TaskForm />
-      </ModalBox>
-      <div className="container">
-        <div className="row mt-4">
-          {/* cards on top */}
-          <TaskCompleted />
-          <LatestTaks />
-          <TaskPieBoard />
-        </div>
-        <div className="row mt-4">
-          <div className="col-md-7">
-            <p>Tasks</p>
+      {deleteId ? (
+        <ModalBox modalTitle="Confirm action">
+          <div className="modal-body">
+            <p>Are you sure you want to delete this.</p>
           </div>
-          {/* search bar */}
-          <TaskSeach />
+          <div className="modal-footer">
+            <NewButton
+              type="button"
+              className="btn btn-primary"
+              onClick={() => {
+                dispatch(authActions.setLoaderStatus(true));
+                dispatch(taskActions.requestDeleteTask(deleteId));
+                setTaskSelected(false);
+                setModalStatus(false);
+                setDeleteId(null);
+              }}
+            >
+              Yes
+            </NewButton>
+            <NewButton
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => {
+                setTaskSelected(false);
+                setModalStatus(false);
+                setDeleteId(null);
+              }}
+            >
+              No
+            </NewButton>
+          </div>
+        </ModalBox>
+      ) : (
+        <ModalBox>
+          <TaskForm />
+        </ModalBox>
+      )}
+      {allTasks.length > 0 ? (
+        <div className="container">
+          <div className="row mt-4">
+            {/* cards on top */}
+            <TaskCompleted />
+            <LatestTaks />
+            <TaskPieBoard />
+          </div>
+          <div className="row mt-4 center_panel">
+            <div className="col-xl-6 col-md-2 col-lg-5">
+              <p>Tasks</p>
+            </div>
+            {/* search bar */}
+            <TaskSeach />
+          </div>
+          {/* tasks listing */}
+          <TaskList />
         </div>
-        {/* tasks listing */}
-        <TaskList />
-      </div>
+      ) : (
+        <NoTaskPopper />
+      )}
     </TaskContext.Provider>
   );
 };

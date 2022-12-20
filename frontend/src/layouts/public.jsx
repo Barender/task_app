@@ -9,4 +9,4 @@ const Public = () => {
   );
 };
 
-export default React.memo(Public);
+export default Public;

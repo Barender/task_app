@@ -1,9 +1,10 @@
 import React from "react";
 import reactSvg from "../../assets/react.svg";
 import authActions from "../../redux/actions/auth.action";
-import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/selectors/auth.selector";
+import { useDispatch, useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
+import NewButton from "../ui_wrapper/button";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -34,9 +35,14 @@ const Navbar = () => {
           </ul>
         </div>
         <div className="d-flex">
-          <button type="button" className="btn btn-link" onClick={handleLogout}>
+          <NewButton
+            type="button"
+            variant="link"
+            className="btn lout_btn"
+            onClick={handleLogout}
+          >
             Logout
-          </button>
+          </NewButton>
         </div>
       </div>
     </nav>
