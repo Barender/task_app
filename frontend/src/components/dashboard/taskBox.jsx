@@ -6,12 +6,7 @@ import NewCheckbox from "../ui_wrapper/checkbox";
 import TaskContext from "../../contexts/task.context";
 
 const TaskBox = ({ task }) => {
-  const {
-    handleTaskUpdate,
-    handleDeleteTask,
-    setTaskSelected,
-    setModalStatus,
-  } = React.useContext(TaskContext);
+  const { handleTaskUpdate, handleDeleteTask, setTaskSelected, setModalStatus } = React.useContext(TaskContext);
   const { task: taskName, isComplete, id } = { ...task };
 
   // modal invoke and set selected task
@@ -30,34 +25,15 @@ const TaskBox = ({ task }) => {
                 id={id}
                 role="checkbox"
                 onChange={(e) => handleTaskUpdate(e.target.checked, task)}
+                label={taskName}
               />
-              <label
-                className={
-                  isComplete
-                    ? "form-check-label text-break text-secondary text-decoration-line-through"
-                    : "form-check-label text-break text-primary"
-                }
-                htmlFor={id}
-              >
-                {taskName}
-              </label>
             </div>
           </div>
           <div className="col-md-3 col-sm-3 col-4 edit_btns">
-            <NewButton
-              type="button"
-              variant="link"
-              className="btn float-end"
-              onClick={() => handleDeleteTask(id)}
-            >
+            <NewButton type="button" variant="link" className="btn float-end" onClick={() => handleDeleteTask(id)}>
               <FaTrash />
             </NewButton>
-            <NewButton
-              type="button"
-              variant="link"
-              className="btn float-end"
-              onClick={handleTaskEdit}
-            >
+            <NewButton type="button" variant="link" className="btn float-end" onClick={handleTaskEdit}>
               <FaPen />
             </NewButton>
           </div>
